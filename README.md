@@ -1,4 +1,38 @@
 
+# 1. url2txts
+
+Scrapes text content from provided URLs using a headless browser agent, processes them with `langchain` and `OpenAI`, and saves the extracted content to `.txt` files for downstream analysis or LLM ingestion.
+
+---
+
+## 📦 Setup (must be < Python 3.13 due to pytorch>)
+
+```bash
+`python -m venv venv`
+`source venv/bin/activate`
+pip install -r requirements.txt
+python url2txts.py <URL.com>
+```
+
+
+2. Install dependencies
+
+pip install browser-use langchain-openai python-dotenv tqdm
+
+    If you want memory support (requires Python <3.13 due to PyTorch):
+
+pip install "browser-use[memory]"
+
+3. Install Chromium (used by Playwright)
+
+playwright install chromium --with-deps --no-shell
+
+    If playwright isn't installed, it comes as a dependency of browser-use. You can also install it explicitly:
+
+pip install playwright
+
+
+
 <h1 align="center">Enable AI to control your browser 🤖</h1>
 
 [![GitHub stars](https://img.shields.io/github/stars/gregpr07/browser-use?style=social)](https://github.com/gregpr07/browser-use/stargazers)

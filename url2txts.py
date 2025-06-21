@@ -222,7 +222,27 @@ async def extract_content_from_url(url: str, section_name: str, llm, max_steps: 
         # Look for extracted content in the history
         history_steps = history.history if hasattr(history, 'history') else history
         
-        # First, look specifically for extract_content action results
+        # First, look for the raw extracted JSON content in the logs
+        # Sometimes the content is in the step's log messages
+        for step in reversed(history_steps):
+            if hasattr(step, 'result') and isinstance(step.result, list):
+                for action_result in step.result:
+                    # Check if this action result contains JSON content
+                    if hasattr(action_result, 'extracted_content'):
+                        raw_content = action_result.extracted_content
+                        if isinstance(raw_content, str):
+                            # Look for JSON patterns in the content
+                            json_match = re.search(r'```json\s*(\{.*?\})\s*```', raw_content, re.DOTALL)
+                            if json_match:
+                                try:
+                                    parsed_json = json.loads(json_match.group(1))
+                                    if isinstance(parsed_json, dict) and len(str(parsed_json)) > 500:
+                                        print(f"✅ Found JSON content in extract_content logs")
+                                        return parsed_json
+                                except json.JSONDecodeError:
+                                    pass
+        
+        # Second, look specifically for extract_content action results
         for step in reversed(history_steps):
             if not hasattr(step, 'result') or not isinstance(step.result, list):
                 continue
@@ -236,12 +256,17 @@ async def extract_content_from_url(url: str, section_name: str, llm, max_steps: 
                     if isinstance(content, str):
                         content = clean_content(content)
                     
-                    # Filter out agent summaries and error messages
+                    # Filter out agent summaries and error messages - be more specific
                     if isinstance(content, str):
                         content_lower = content.lower()
-                        # Skip if it's clearly an agent summary or error
-                        if (content.startswith("Successfully extracted") or
+                        
+                        # Skip if it's clearly an agent summary (more specific filtering)
+                        if (content.startswith("The task was successfully completed") or
+                            content.startswith("Successfully extracted") or
+                            content.startswith("The main content of") or
                             content.startswith("The page") or
+                            "task completed" in content_lower or
+                            "was extracted successfully" in content_lower or
                             "404 error" in content_lower or
                             "does not exist" in content_lower or
                             "cannot be completed" in content_lower or
@@ -266,6 +291,27 @@ async def extract_content_from_url(url: str, section_name: str, llm, max_steps: 
                     elif isinstance(content, (dict, list)) and len(str(content)) > 200:
                         print(f"✅ Found structured content from extract_content")
                         return content
+                
+                # Also check for action_type to specifically target extract_content actions
+                if (hasattr(action_result, 'action_type') and 
+                    action_result.action_type == 'extract_content' and
+                    hasattr(action_result, 'result')):
+                    content = action_result.result
+                    
+                    if isinstance(content, str):
+                        content = clean_content(content)
+                        # Try to parse as JSON
+                        try:
+                            parsed_content = json.loads(content)
+                            if isinstance(parsed_content, dict) and len(str(parsed_content)) > 500:
+                                print(f"✅ Found JSON content from extract_content action result")
+                                return parsed_content
+                        except json.JSONDecodeError:
+                            pass
+                    
+                    if content and len(str(content)) > 200:
+                        print(f"✅ Found content from extract_content action result")
+                        return content
         
         # If no good extract_content found, look for other substantial content
         for step in reversed(history_steps):
@@ -273,6 +319,11 @@ async def extract_content_from_url(url: str, section_name: str, llm, max_steps: 
                 continue
                 
             for action_result in step.result:
+                # Skip done actions entirely to avoid summaries
+                if (hasattr(action_result, 'action_type') and 
+                    action_result.action_type == 'done'):
+                    continue
+                
                 # Check for any substantial content that's not a summary
                 for attr in ['content', 'text', 'result']:
                     if hasattr(action_result, attr):
@@ -281,9 +332,13 @@ async def extract_content_from_url(url: str, section_name: str, llm, max_steps: 
                             content = clean_content(content)
                         
                         if content and isinstance(content, str) and len(content) > 500:
-                            # Skip obvious summaries
-                            if not (content.startswith("Successfully") or 
+                            # Skip obvious summaries (more comprehensive filtering)
+                            if not (content.startswith("The task was successfully completed") or
+                                   content.startswith("Successfully") or 
                                    content.startswith("The page") or
+                                   content.startswith("The main content of") or
+                                   "task completed" in content.lower() or
+                                   "was extracted successfully" in content.lower() or
                                    "extracted" in content.lower()[:100]):
                                 print(f"✅ Found substantial content via attribute '{attr}'")
                                 return content
@@ -425,7 +480,7 @@ async def main():
     print(f"📁 Output directory: {output_dir}")
 
     try:
-        llm = ChatOpenAI(model='gpt-4o')
+        llm = ChatOpenAI(model='gpt-4o-mini')
     except Exception as e:
         print(f"❌ Error setting up LLM: {e}")
         return
