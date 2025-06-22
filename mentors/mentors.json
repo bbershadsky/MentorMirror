@@ -22,5 +22,21 @@
     "style_file": "charlie_munger.json",
     "session_directory": "mentors/sessions/session_charlie_munger_2025-06-22_00-41-16",
     "status": "active"
+  },
+  "unknown_author_1": {
+    "display_name": "Unknown Author 1",
+    "safe_name": "unknown_author_1",
+    "last_updated": "2025-06-22T00:45:52.664248",
+    "style_file": "unknown_author_1.json",
+    "session_directory": "mentors/sessions/session_unknown_author_1_2025-06-22_00-45-44",
+    "status": "active"
+  },
+  "eminem": {
+    "display_name": "Eminem",
+    "safe_name": "eminem",
+    "last_updated": "2025-06-22T00:51:42.893153",
+    "style_file": "eminem.json",
+    "session_directory": "mentors/sessions/session_eminem_2025-06-22_00-51-29",
+    "status": "active"
   }
 }
