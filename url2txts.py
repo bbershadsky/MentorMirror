@@ -5,8 +5,24 @@ import datetime
 import json
 import re
 import argparse
-from typing import Any, List
+import requests
+import tempfile
+from typing import Any, List, Dict
 from urllib.parse import urljoin, urlparse
+
+# Add PDF processing imports
+try:
+    import fitz  # PyMuPDF
+    PDF_AVAILABLE = True
+except ImportError:
+    try:
+        import pdfplumber
+        PDF_AVAILABLE = True
+        USE_PDFPLUMBER = True
+    except ImportError:
+        PDF_AVAILABLE = False
+        print("⚠️  Warning: No PDF processing library found. Install PyMuPDF or pdfplumber for PDF support:")
+        print("   pip install PyMuPDF  # or pip install pdfplumber")
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -46,6 +62,204 @@ def clean_content(content: str) -> str:
         content = re.sub(r'\n?```$', '', content, flags=re.MULTILINE)
         content = content.strip()
     return content
+
+def is_pdf_url(url: str) -> bool:
+    """Check if URL points to a PDF file or is a local PDF file."""
+    # Check if it's a local file path
+    if os.path.exists(url) and url.lower().endswith('.pdf'):
+        return True
+    
+    # Check if it's a URL pointing to a PDF
+    parsed = urlparse(url)
+    path = parsed.path.lower()
+    return path.endswith('.pdf') or 'pdf' in path
+
+def download_pdf(url: str) -> str:
+    """Download PDF from URL to temporary file."""
+    try:
+        print(f"📥 Downloading PDF from: {url}")
+        
+        # Set headers to mimic a browser request
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,application/pdf,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Encoding': 'gzip, deflate',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        }
+        
+        response = requests.get(url, stream=True, headers=headers, timeout=30)
+        response.raise_for_status()
+        
+        # Check if the response is actually a PDF
+        content_type = response.headers.get('content-type', '').lower()
+        if 'pdf' not in content_type and not url.lower().endswith('.pdf'):
+            print(f"⚠️  Warning: Content-Type is {content_type}, but continuing...")
+        
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
+            for chunk in response.iter_content(chunk_size=8192):
+                tmp_file.write(chunk)
+            temp_path = tmp_file.name
+        
+        file_size = os.path.getsize(temp_path)
+        print(f"✅ PDF downloaded to: {temp_path} ({file_size} bytes)")
+        return temp_path
+    except Exception as e:
+        print(f"❌ Error downloading PDF: {e}")
+        return None
+
+def extract_text_from_pdf_pymupdf(pdf_path: str) -> Dict[str, Any]:
+    """Extract text from PDF using PyMuPDF."""
+    try:
+        doc = fitz.open(pdf_path)
+        text_content = ""
+        metadata = {}
+        
+        # Extract metadata
+        metadata = {
+            "title": doc.metadata.get("title", ""),
+            "author": doc.metadata.get("author", ""),
+            "subject": doc.metadata.get("subject", ""),
+            "creator": doc.metadata.get("creator", ""),
+            "producer": doc.metadata.get("producer", ""),
+            "creation_date": doc.metadata.get("creationDate", ""),
+            "modification_date": doc.metadata.get("modDate", ""),
+            "total_pages": doc.page_count
+        }
+        
+        print(f"📄 Extracting text from {doc.page_count} pages...")
+        
+        # Extract text from each page
+        pages = []
+        for page_num in range(doc.page_count):
+            page = doc[page_num]
+            page_text = page.get_text()
+            
+            if page_text.strip():  # Only add non-empty pages
+                pages.append({
+                    "page_number": page_num + 1,
+                    "text": page_text.strip()
+                })
+                text_content += f"\n\n--- Page {page_num + 1} ---\n\n{page_text.strip()}"
+        
+        doc.close()
+        
+        return {
+            "extraction_method": "pymupdf",
+            "metadata": metadata,
+            "full_text": text_content.strip(),
+            "pages": pages,
+            "total_characters": len(text_content),
+            "pages_with_content": len(pages)
+        }
+        
+    except Exception as e:
+        print(f"❌ Error extracting text with PyMuPDF: {e}")
+        return None
+
+def extract_text_from_pdf_pdfplumber(pdf_path: str) -> Dict[str, Any]:
+    """Extract text from PDF using pdfplumber."""
+    try:
+        import pdfplumber
+        
+        text_content = ""
+        pages = []
+        
+        with pdfplumber.open(pdf_path) as pdf:
+            print(f"📄 Extracting text from {len(pdf.pages)} pages...")
+            
+            # Extract metadata
+            metadata = {
+                "title": pdf.metadata.get("Title", ""),
+                "author": pdf.metadata.get("Author", ""),
+                "subject": pdf.metadata.get("Subject", ""),
+                "creator": pdf.metadata.get("Creator", ""),
+                "producer": pdf.metadata.get("Producer", ""),
+                "creation_date": str(pdf.metadata.get("CreationDate", "")),
+                "modification_date": str(pdf.metadata.get("ModDate", "")),
+                "total_pages": len(pdf.pages)
+            }
+            
+            # Extract text from each page
+            for page_num, page in enumerate(pdf.pages):
+                page_text = page.extract_text()
+                
+                if page_text and page_text.strip():  # Only add non-empty pages
+                    pages.append({
+                        "page_number": page_num + 1,
+                        "text": page_text.strip()
+                    })
+                    text_content += f"\n\n--- Page {page_num + 1} ---\n\n{page_text.strip()}"
+        
+        return {
+            "extraction_method": "pdfplumber",
+            "metadata": metadata,
+            "full_text": text_content.strip(),
+            "pages": pages,
+            "total_characters": len(text_content),
+            "pages_with_content": len(pages)
+        }
+        
+    except Exception as e:
+        print(f"❌ Error extracting text with pdfplumber: {e}")
+        return None
+
+def extract_text_from_pdf(pdf_path: str) -> Dict[str, Any]:
+    """Extract text from PDF using available library."""
+    if not PDF_AVAILABLE:
+        print("❌ No PDF processing library available")
+        return None
+    
+    # Try PyMuPDF first (usually better), then pdfplumber
+    if 'USE_PDFPLUMBER' not in globals():
+        result = extract_text_from_pdf_pymupdf(pdf_path)
+        if result:
+            return result
+    
+    # Fallback to pdfplumber
+    return extract_text_from_pdf_pdfplumber(pdf_path)
+
+async def process_pdf_url(url: str, section_name: str) -> Any:
+    """Process a PDF URL by downloading and extracting text."""
+    if not PDF_AVAILABLE:
+        print("❌ Cannot process PDF: No PDF processing library installed")
+        return None
+    
+    # Check if it's a local file path
+    if os.path.exists(url):
+        print(f"📄 Processing local PDF file: {url}")
+        pdf_content = extract_text_from_pdf(url)
+        if pdf_content:
+            print(f"✅ Successfully extracted {pdf_content['pages_with_content']} pages, {pdf_content['total_characters']} characters")
+            return pdf_content
+        else:
+            print(f"❌ Failed to extract text from local PDF")
+            return None
+    
+    # Download PDF from URL
+    pdf_path = download_pdf(url)
+    if not pdf_path:
+        return None
+    
+    try:
+        # Extract text
+        print(f"🔍 Extracting text from PDF...")
+        pdf_content = extract_text_from_pdf(pdf_path)
+        
+        if pdf_content:
+            print(f"✅ Successfully extracted {pdf_content['pages_with_content']} pages, {pdf_content['total_characters']} characters")
+            return pdf_content
+        else:
+            print(f"❌ Failed to extract text from PDF")
+            return None
+            
+    finally:
+        # Clean up temporary file
+        if os.path.exists(pdf_path):
+            os.unlink(pdf_path)
+            print(f"🗑️  Cleaned up temporary file: {pdf_path}")
 
 def save_content(content: Any, section_name: str, output_dir: str) -> bool:
     """Parse the content from the agent and save HTML, text, and JSON files."""
@@ -522,7 +736,13 @@ async def main():
         print(f"📍 URL: {url}")
         print("="*80)
 
-        content = await extract_content_from_url(url, section_name, llm, args.steps)
+        # Check if this is a PDF URL
+        if is_pdf_url(url):
+            print("📄 Detected PDF file, using PDF processing...")
+            content = await process_pdf_url(url, section_name)
+        else:
+            print("🌐 Detected web page, using browser scraping...")
+            content = await extract_content_from_url(url, section_name, llm, args.steps)
         
         if content:
             if save_content(content, section_name, output_dir):
