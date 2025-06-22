@@ -6,15 +6,20 @@ Based on the MentorMirror concept from IDEA.md
 
 import json
 import re
-from typing import Dict, List, Any
+from typing import Dict, Any
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
 class StyleEmulator:
-    def __init__(self, model_name: str = "gpt-4o-mini"):
-        self.llm = ChatOpenAI(model=model_name)
+    def __init__(self, service: str = "openai", model_name: str = "gpt-4o-mini"):
+        """Initializes the style emulator with a specific model."""
+        if service.lower() == "google":
+            self.llm = ChatGoogleGenerativeAI(model=model_name, temperature=0.7)
+        else: # default to openai
+            self.llm = ChatOpenAI(model=model_name, temperature=0.7)
     
     def analyze_writing_style(self, text: str, author_name: str = "Unknown") -> Dict[str, Any]:
         """

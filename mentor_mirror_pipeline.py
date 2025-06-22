@@ -11,7 +11,11 @@ import os
 import datetime
 from typing import Dict, List, Any, Optional
 from pathlib import Path
+import argparse
 
+# Add new imports for model selection
+import tiktoken
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
@@ -21,10 +25,19 @@ from sam_altman_style_prompts import create_sam_altman_emulation_prompt, create_
 
 load_dotenv()
 
+# Define a token limit for switching models
+TOKEN_LIMIT_GPT4O_MINI = 120000
+
 class MentorMirror:
-    def __init__(self, model_name: str = "gpt-4o-mini"):
-        self.llm = ChatOpenAI(model=model_name)
-        self.style_emulator = StyleEmulator(model_name)
+    def __init__(self, service: str = "openai", model_name: str = "gpt-4o-mini"):
+        """Initializes the pipeline with a specific model."""
+        if service.lower() == "google":
+            self.llm = ChatGoogleGenerativeAI(model=model_name)
+            self.style_emulator = StyleEmulator(service="google", model_name=model_name)
+        else:  # default to openai
+            self.llm = ChatOpenAI(model=model_name)
+            self.style_emulator = StyleEmulator(service="openai", model_name=model_name)
+        
         self.output_dir = None
         
     def setup_session(self, mentor_name: str) -> str:
@@ -55,7 +68,6 @@ class MentorMirror:
         print(f"📊 Analyzing {mentor_name}'s writing style...")
         style_analysis = self.style_emulator.analyze_writing_style(content, mentor_name)
         
-        # Save analysis to session directory
         if self.output_dir:
             analysis_path = os.path.join(self.output_dir, "style_analysis.json")
             with open(analysis_path, 'w', encoding='utf-8') as f:
@@ -68,14 +80,11 @@ class MentorMirror:
         """Generate mentor-specific prompts based on style analysis."""
         print(f"🎯 Generating {mentor_name} mentor prompts...")
         
-        # Use specialized prompts if available (like Sam Altman)
         if mentor_name.lower() == "sam altman":
             prompts = create_mentor_prompts_sam_style()
         else:
-            # Use generic style-based prompts
             prompts = self.style_emulator.create_mentor_style_prompts(style_analysis)
         
-        # Save prompts to session directory
         if self.output_dir:
             prompts_path = os.path.join(self.output_dir, "mentor_prompts.json")
             with open(prompts_path, 'w', encoding='utf-8') as f:
@@ -142,14 +151,11 @@ class MentorMirror:
         print(f"✨ Generating content in {mentor_name}'s style about '{topic}'...")
         
         if mentor_name.lower() == "sam altman":
-            # Use specialized Sam Altman prompt
             prompt = create_sam_altman_emulation_prompt(topic)
             content = self.llm.invoke(prompt).content
         else:
-            # Use generic style emulation
             content = self.style_emulator.generate_styled_content(style_analysis, topic)
         
-        # Save generated content
         if self.output_dir:
             safe_topic = topic.lower().replace(' ', '_').replace('/', '_')[:30]
             content_path = os.path.join(self.output_dir, f"generated_content_{safe_topic}.txt")
@@ -206,46 +212,44 @@ async def main():
     """
     Example workflow using Sam Altman's DALL•E 2 content
     """
-    print("🧠 MentorMirror Pipeline - Complete Workflow")
+    parser = argparse.ArgumentParser(description="MentorMirror Pipeline")
+    parser.add_argument("--service", type=str, default="openai", choices=["openai", "google"], help="AI service to use")
+    parser.add_argument("--model", type=str, default="gpt-4o-mini", help="Model name to use")
+    args = parser.parse_args()
+
+    print(f"🧠 MentorMirror Pipeline - Using {args.service} with model {args.model}")
     print("=" * 60)
     
-    # Initialize the system
-    mentor_mirror = MentorMirror()
+    mentor_mirror = MentorMirror(service=args.service, model_name=args.model)
     
-    # Setup session
     mentor_name = "Sam Altman"
     session_dir = mentor_mirror.setup_session(mentor_name)
     print(f"📁 Session directory: {session_dir}")
     
-    # Load mentor content (using existing scraped content)
     content_file = "blog-samaltman_2025-06-21_19-21-05/dall-star-e-2.txt"
-    if os.path.exists(content_file):
-        mentor_content = mentor_mirror.load_mentor_content(content_file)
-        print(f"📖 Loaded content from: {content_file}")
-    else:
+    if not os.path.exists(content_file):
         print(f"⚠️  Content file not found: {content_file}")
         return
+        
+    mentor_content = mentor_mirror.load_mentor_content(content_file)
+    print(f"📖 Loaded content from: {content_file}")
     
-    # Analyze style
+    # This will trigger the LLM selection
     style_analysis = mentor_mirror.analyze_mentor_style(mentor_content, mentor_name)
     
-    # Generate mentor prompts
     mentor_prompts = mentor_mirror.generate_mentor_prompts(style_analysis, mentor_name)
     
-    # Generate daily Mentor-gram
     mentorgram = mentor_mirror.generate_daily_mentorgram(style_analysis, mentor_name)
     print_mentorgram(mentorgram)
     
-    # Generate styled content on a new topic
     new_content = mentor_mirror.generate_styled_content(
-        style_analysis, 
+        style_analysis,
         "The future of AI in education", 
         mentor_name
     )
     print(f"\n✨ Generated content preview:")
     print(new_content[:300] + "..." if len(new_content) > 300 else new_content)
     
-    # Create session summary
     summary = mentor_mirror.create_session_summary(mentor_name, style_analysis, mentorgram)
     
     print(f"\n🎉 MentorMirror session complete!")
