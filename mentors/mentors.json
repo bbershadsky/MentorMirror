@@ -1,0 +1,26 @@
+{
+  "winston_churchill": {
+    "display_name": "Winston Churchill",
+    "safe_name": "winston_churchill",
+    "last_updated": "2025-06-22T00:34:28.467504",
+    "style_file": "winston_churchill.json",
+    "session_directory": "mentors/sessions/session_winston_churchill_2025-06-22_00-34-19",
+    "status": "active"
+  },
+  "abraham_lincoln": {
+    "display_name": "Abraham Lincoln",
+    "safe_name": "abraham_lincoln",
+    "last_updated": "2025-06-22T00:39:40.128462",
+    "style_file": "abraham_lincoln.json",
+    "session_directory": "mentors/sessions/session_abraham_lincoln_2025-06-22_00-39-30",
+    "status": "active"
+  },
+  "charlie_munger": {
+    "display_name": "Charlie Munger",
+    "safe_name": "charlie_munger",
+    "last_updated": "2025-06-22T00:41:23.059712",
+    "style_file": "charlie_munger.json",
+    "session_directory": "mentors/sessions/session_charlie_munger_2025-06-22_00-41-16",
+    "status": "active"
+  }
+}

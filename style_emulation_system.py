@@ -60,6 +60,37 @@ class StyleEmulator:
                 "analysis": response.content,
                 "raw_response": True
             }
+
+    def infer_author_name(self, text: str) -> str:
+        """
+        Attempt to infer the author's name from the content.
+        """
+        inference_prompt = f"""
+        Analyze the following text and try to determine who the author is based on:
+        - Any self-references or mentions of their own name
+        - Writing style and topics that might indicate a specific well-known author
+        - Any biographical details or personal anecdotes mentioned
+        - The overall voice and perspective
+
+        Text to analyze:
+        \"\"\"
+        {text[:2000]}...
+        \"\"\"
+
+        Return ONLY the author's name (first and last name if available). If you cannot determine the author with reasonable confidence, return "Unknown Author".
+        """
+        
+        try:
+            response = self.llm.invoke(inference_prompt)
+            author_name = response.content.strip().strip('"').strip("'")
+            
+            # Basic validation - should be a reasonable name
+            if len(author_name) > 50 or len(author_name.split()) > 4:
+                return "Unknown Author"
+            
+            return author_name if author_name else "Unknown Author"
+        except Exception:
+            return "Unknown Author"
     
     def create_style_emulation_prompt(self, style_analysis: Dict[str, Any], target_topic: str) -> str:
         """
@@ -90,6 +121,38 @@ class StyleEmulator:
         
         return emulation_prompt
     
+    def rewrite_text_in_style(self, user_text: str, style_analysis: dict) -> str:
+        """
+        Rewrites the user's text to match the mentor's style.
+        """
+        if style_analysis.get("raw_response"):
+            style_description = style_analysis["analysis"]
+        else:
+            style_description = json.dumps(style_analysis, indent=2)
+
+        rewrite_prompt = f"""
+        You are an expert writing style editor. Your task is to rewrite the "USER TEXT" provided below so that it matches the style defined in the "STYLE ANALYSIS".
+
+        **Key Instructions:**
+        - **Preserve the Core Message:** The original meaning, message, and key information of the user's text MUST be maintained. Do not add new ideas or remove essential points.
+        - **Adopt the Style:** Infuse the rewritten text with the specified tone, voice, sentence structure, vocabulary, and rhetorical patterns from the style analysis.
+        - **Be Subtle:** The goal is a natural-sounding text, not a caricature. The style should be adopted seamlessly.
+
+        **STYLE ANALYSIS:**
+        ---
+        {style_description}
+        ---
+
+        **USER TEXT:**
+        ---
+        {user_text}
+        ---
+
+        **REWRITTEN TEXT (in the mentor's style):**
+        """
+        response = self.llm.invoke(rewrite_prompt)
+        return response.content
+
     def generate_styled_content(self, style_analysis: Dict[str, Any], target_topic: str) -> str:
         """
         Generate content in the analyzed style about a target topic.
@@ -148,35 +211,5 @@ class StyleEmulator:
         
         return prompts
 
-def main():
-    """
-    Example usage with the DALL•E 2 text
-    """
-    # Read the DALL•E 2 text
-    with open("blog-samaltman_2025-06-21_19-21-05/dall-star-e-2.txt", "r", encoding="utf-8") as f:
-        sample_text = f.read()
-    
-    emulator = StyleEmulator()
-    
-    print("🔍 Analyzing Sam Altman's writing style...")
-    style_analysis = emulator.analyze_writing_style(sample_text, "Sam Altman")
-    
-    print("\n📊 Style Analysis Results:")
-    if style_analysis.get("raw_response"):
-        print(style_analysis["analysis"])
-    else:
-        print(json.dumps(style_analysis, indent=2))
-    
-    print("\n✨ Generating content in Sam's style about 'AI Safety'...")
-    styled_content = emulator.generate_styled_content(style_analysis, "AI Safety")
-    print(styled_content)
-    
-    print("\n🎯 Creating mentor-style prompts...")
-    mentor_prompts = emulator.create_mentor_style_prompts(style_analysis)
-    
-    for prompt_type, prompt in mentor_prompts.items():
-        print(f"\n--- {prompt_type.upper()} PROMPT ---")
-        print(prompt[:200] + "..." if len(prompt) > 200 else prompt)
-
 if __name__ == "__main__":
-    main() 
+    print("StyleEmulator module loaded. Use this class in other scripts for style analysis and emulation.") 

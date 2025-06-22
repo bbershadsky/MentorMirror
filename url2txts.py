@@ -50,7 +50,7 @@ def setup_output_directory(base_url: str) -> str:
     """Create and return the output directory path based on the domain."""
     domain_name = get_domain_name(base_url)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    output_dir = f"{domain_name}_{timestamp}"
+    output_dir = f"scraped_content_{domain_name}_{timestamp}"
     os.makedirs(output_dir, exist_ok=True)
     return output_dir
 

@@ -1,0 +1,58 @@
+{
+  "warren_buffett": {
+    "display_name": "Warren Buffett",
+    "safe_name": "warren_buffett",
+    "last_updated": "2025-06-21T23:39:35.104169",
+    "style_file": "warren_buffett.json",
+    "session_directory": "mentor_session_warren_buffett_2025-06-21_23-39-27",
+    "status": "active"
+  },
+  "max_olson": {
+    "display_name": "Max Olson",
+    "safe_name": "max_olson",
+    "last_updated": "2025-06-21T23:52:13.307758",
+    "style_file": "max_olson.json",
+    "session_directory": "mentor_session_max_olson_2025-06-21_23-52-03",
+    "status": "active"
+  },
+  "unknown_author": {
+    "display_name": "Unknown Author",
+    "safe_name": "unknown_author",
+    "last_updated": "2025-06-22T00:23:41.044203",
+    "style_file": "unknown_author.json",
+    "session_directory": "mentor_session_unknown_author_2025-06-22_00-23-36",
+    "status": "active"
+  },
+  "john_f_kennedy": {
+    "display_name": "John F. Kennedy",
+    "safe_name": "john_f_kennedy",
+    "last_updated": "2025-06-22T00:15:43.425029",
+    "style_file": "john_f_kennedy.json",
+    "session_directory": "mentor_session_john_f_kennedy_2025-06-22_00-15-29",
+    "status": "active"
+  },
+  "benjamin_franklin": {
+    "display_name": "Benjamin Franklin",
+    "safe_name": "benjamin_franklin",
+    "last_updated": "2025-06-22T00:16:37.115941",
+    "style_file": "benjamin_franklin.json",
+    "session_directory": "mentor_session_benjamin_franklin_2025-06-22_00-16-28",
+    "status": "active"
+  },
+  "martin_luther_king_jr": {
+    "display_name": "Martin Luther King Jr.",
+    "safe_name": "martin_luther_king_jr",
+    "last_updated": "2025-06-22T00:18:08.163420",
+    "style_file": "martin_luther_king_jr.json",
+    "session_directory": "mentor_session_martin_luther_king_jr_2025-06-22_00-17-59",
+    "status": "active"
+  },
+  "abraham_lincoln": {
+    "display_name": "Abraham Lincoln",
+    "safe_name": "abraham_lincoln",
+    "last_updated": "2025-06-22T00:21:26.593396",
+    "style_file": "abraham_lincoln.json",
+    "session_directory": "mentor_session_abraham_lincoln_2025-06-22_00-21-16",
+    "status": "active"
+  }
+}

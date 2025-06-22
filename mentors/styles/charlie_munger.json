@@ -1,0 +1,32 @@
+{
+  "Tone & Voice": {
+    "overall_tone": "formal",
+    "optimistic_or_pessimistic": "neutral"
+  },
+  "Sentence Structure": {
+    "sentence_length": "varied, predominantly medium to long",
+    "complexity": "moderately complex with technical details",
+    "use_of_lists_bullets": "no lists or bullets present"
+  },
+  "Vocabulary & Diction": {
+    "level_of_technical_language": "high, includes financial terminology",
+    "common_word_choices": "standard financial language",
+    "jargon": "terms like 'consolidated normal operating income', 'shareholders' equity'"
+  },
+  "Rhetorical Patterns": {
+    "argument_presentation": "factual and data-driven",
+    "use_of_examples": "financial results serve as examples",
+    "storytelling_style": "not narrative; focuses on factual reporting"
+  },
+  "Unique Stylistic Elements": {
+    "signature_phrases": "none explicitly apparent in the excerpt",
+    "punctuation_habits": "standard punctuation, clear and precise",
+    "paragraph_structure": "single paragraph with a focus on financial metrics"
+  },
+  "Content Themes": {
+    "topics_concepts": "financial performance, shareholder value, income metrics"
+  },
+  "Audience Engagement": {
+    "reader_connection": "indirect engagement through presentation of data, no direct address or questions"
+  }
+}

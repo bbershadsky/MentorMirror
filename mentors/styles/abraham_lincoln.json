@@ -1,0 +1,49 @@
+{
+  "Tone & Voice": {
+    "overallTone": "formal",
+    "optimism": "optimistic",
+    "seriousness": "solemn"
+  },
+  "Sentence Structure": {
+    "sentenceLength": "varied, with a mix of long and short sentences",
+    "complexity": "complex sentences with subordinate clauses",
+    "useOfLists": "use of lists in the form of parallel structure and repetition"
+  },
+  "Vocabulary & Diction": {
+    "levelOfTechnicalLanguage": "low to moderate, accessible to a general audience",
+    "commonWordChoices": "simple yet powerful words (e.g., 'nation', 'liberty', 'dedicate')",
+    "jargon": "minimal jargon, focused on universal concepts"
+  },
+  "Rhetorical Patterns": {
+    "presentationOfArguments": "uses historical reference and moral imperatives",
+    "useOfExamples": "references the sacrifices of soldiers",
+    "storytellingStyle": "evocative and inspirational, creating a narrative of sacrifice and purpose"
+  },
+  "Unique Stylistic Elements": {
+    "signaturePhrases": "'of the people, by the people, for the people'",
+    "punctuationHabits": "frequent use of dashes for emphasis and pauses",
+    "paragraphStructure": "short paragraphs with a strong central theme"
+  },
+  "Content Themes": {
+    "topics": [
+      "sacrifice",
+      "national unity",
+      "equality",
+      "freedom",
+      "the human cost of war"
+    ],
+    "concepts": [
+      "dedication to the fallen",
+      "unfinished work of democracy",
+      "the enduring nature of freedom"
+    ]
+  },
+  "Audience Engagement": {
+    "connectionMethods": [
+      "direct address through 'we' and 'us'",
+      "appealing to shared values and emotions",
+      "invoking a sense of collective responsibility"
+    ],
+    "questions": "not explicitly asked, but rhetorical implications are present"
+  }
+}
