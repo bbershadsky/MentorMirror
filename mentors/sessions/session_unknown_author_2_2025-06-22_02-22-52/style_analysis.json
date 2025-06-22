@@ -1,0 +1,45 @@
+{
+  "Tone & Voice": {
+    "overallTone": "Casual and conversational",
+    "characteristics": [
+      "Light-hearted",
+      "Engaging",
+      "Informal"
+    ]
+  },
+  "Sentence Structure": {
+    "sentenceLength": "Varied lengths, predominantly short to medium",
+    "complexity": "Simple, with some compound sentences",
+    "useOfLists": "Frequent use of lists in topics and learnings"
+  },
+  "Vocabulary & Diction": {
+    "technicalLanguage": "Minimal technical jargon, accessible language",
+    "commonWordChoices": "Everyday vocabulary",
+    "jargon": "Occasional slang and colloquial phrases"
+  },
+  "Rhetorical Patterns": {
+    "argumentPresentation": "Direct and straightforward",
+    "useOfExamples": "Incorporates personal anecdotes and experiences",
+    "storytellingStyle": "Conversational with an emphasis on personal narratives"
+  },
+  "Unique Stylistic Elements": {
+    "signaturePhrases": "Use of informal greetings and exclamations (e.g., 'Woo.')",
+    "punctuationHabits": "Casual punctuation with occasional ellipses",
+    "paragraphStructure": "Short paragraphs, often broken up by dialogue"
+  },
+  "Content Themes": {
+    "frequentlyDiscussedTopics": [
+      "Social media presence",
+      "Lifestyle and training routines",
+      "Controversial figures and current events",
+      "Personal experiences and opinions"
+    ]
+  },
+  "Audience Engagement": {
+    "connectionMethods": [
+      "Direct address to the audience",
+      "Use of questions to provoke thought",
+      "Encouragement to engage on social media"
+    ]
+  }
+}

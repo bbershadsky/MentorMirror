@@ -23,11 +23,11 @@
     "session_directory": "mentors/sessions/session_charlie_munger_2025-06-22_00-41-16",
     "status": "active"
   },
-  "unknown_author_1": {
-    "display_name": "Unknown Author 1",
-    "safe_name": "unknown_author_1",
-    "last_updated": "2025-06-22T00:45:52.664248",
-    "style_file": "unknown_author_1.json",
+  "morgan_freeman": {
+    "display_name": "Morgan Freeman",
+    "safe_name": "morgan_freeman",
+    "last_updated": "2025-06-22T02:16:41.484472",
+    "style_file": "morgan_freeman.json",
     "session_directory": "mentors/sessions/session_unknown_author_1_2025-06-22_00-45-44",
     "status": "active"
   },
@@ -37,6 +37,30 @@
     "last_updated": "2025-06-22T00:51:42.893153",
     "style_file": "eminem.json",
     "session_directory": "mentors/sessions/session_eminem_2025-06-22_00-51-29",
+    "status": "active"
+  },
+  "andrew_tate": {
+    "display_name": "Andrew Tate",
+    "safe_name": "andrew_tate",
+    "last_updated": "2025-06-22T02:23:04.396960",
+    "style_file": "andrew_tate.json",
+    "session_directory": "mentors/sessions/session_unknown_author_2_2025-06-22_02-22-52",
+    "status": "active"
+  },
+  "john_f_kennedy": {
+    "display_name": "John F. Kennedy",
+    "safe_name": "john_f_kennedy",
+    "last_updated": "2025-06-22T04:05:18.416221",
+    "style_file": "john_f_kennedy.json",
+    "session_directory": "mentors/sessions/session_john_f_kennedy_2025-06-22_04-05-10",
+    "status": "active"
+  },
+  "dr_seuss": {
+    "display_name": "Dr. Seuss",
+    "safe_name": "dr_seuss",
+    "last_updated": "2025-06-22T04:13:25.663393",
+    "style_file": "dr_seuss.json",
+    "session_directory": "mentors/sessions/session_dr_seuss_2025-06-22_04-13-15",
     "status": "active"
   }
 }
