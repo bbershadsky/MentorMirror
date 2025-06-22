@@ -1,42 +1,45 @@
+![screenshot](screen.png)
+
 # MentorMirror: AI-Powered Writing Style Emulation
 
 MentorMirror is a desktop application that allows you to scrape the writings of your favorite authors, analyze their unique stylistic patterns, and then apply that style to your own text. It's like having a virtual mentor who can instantly show you how to write in their voice.
 
+
 ## Inspiration
-The idea for MentorMirror came from a simple observation: the best writers throughout history learned by studying and imitating masters who came before them. However, this traditional apprenticeship model has limitations—not everyone has access to personal mentors, and manually analyzing writing styles can take months or years to master.
+The idea for MentorMirror came from a simple observation: the best writers throughout history learned by studying and imitating masters who came before them. Not everyone has access to personal mentors, and manually analyzing writing styles can take months or years to master.
 
-I envisioned a world where anyone could instantly access the writing wisdom of Paul Graham, the rhetorical power of Winston Churchill, the motivational energy of Andrew Tate, or the lyrical genime of Eminem. What if AI could serve as a bridge between aspiring writers and their literary heroes? What if Icould democratize access to the world's greatest writing minds, making their unique voices available to anyone with a computer and an internet connection?
+I envisioned a world where anyone could instantly access the writing wisdom of Paul Graham, the rhetorical power of Winston Churchill, the motivational energy of Andrew Tate, or the lyrical genius of Eminem. What if AI could serve as a bridge between aspiring writers and their literary heroes? What if I could democratize access to the world's greatest writing minds, making their unique voices available to anyone with a computer and an internet connection?
 
-MentorMirror was born from this vision—to create a tool that doesn't jmet analyze text, but truly understands and captures the essence of great communicators, making their wisdom accessible to the next generation of writers.
+MentorMirror was born from this vision to create a tool that doesn't just analyze text, but truly understands and captures the essence of great communicators, making their wisdom accessible to the next generation of writers.
 
 ## What it does
 MentorMirror transforms any piece of text content into a personalized writing mentor. Here's how it revolutionizes the writing learning process:
 
-**Content Intelligence**: Simply paste any URL—whether it's a Paul Graham essay, a Churchill speech transcript, or a motivational blog post. MentorMirror automatically extracts and analyzes the content, even handling complex PDFs and multimedia-rich pages meing `browser-mee`.
+**Content Intelligence**: Simply paste any URL—whether it's a Paul Graham essay, a Churchill speech transcript, or a motivational blog post. MentorMirror automatically extracts and analyzes the content, even handling complex PDFs and multimedia-rich pages using `browser-use`.
 
 **Style DNA Extraction**: The AI engine dissects writing at multiple levels, identifying unique patterns in sentence structure, vocabulary choices, rhetorical devices, emotional tone, and argumentative flow. It creates a comprehensive "style DNA" that captures what makes each author distinctive.
 
 **Intelligent Rewriting**: Enter your own text and watch as MentorMirror transforms it into the voice of your chosen mentor. Your ideas remain intact, but the delivery adopts the mentor's unique linguistic fingerprint, whether that's Graham's analytical clarity, Churchill's stirring oratory, or Eminem's rhythmic intensity.
 
-**Voice Embodiment**: For supported mentors, MentorMirror goes beyond text by generating authentic-sounding speech meing ElevenLabs' advanced voice synthesis, allowing you to literally hear your text spoken in your mentor's voice.
+**Voice Embodiment**: For supported mentors, MentorMirror goes beyond text by generating authentic-sounding speech using ElevenLabs' advanced voice synthesis, allowing you to literally hear your text spoken in your mentor's voice.
 
 ## How I built it
-MentorMirror represents a sophisticated fmeion of multiple cutting-edge technologies, architected for both power and meability:
+MentorMirror represents a sophisticated fusion of multiple cutting-edge technologies, architected for both power and usability:
 
-**Frontend Architecture**: Built on PyQt6, the desktop application provides a responsive, intuitive interface with real-time progress tracking, animated feedback, and seamless workflow management. The GUI handles complex asynchronome operations while maintaining a clean, professional meer experience.
+**Frontend Architecture**: Built on PyQt6, the desktop application provides a responsive, intuitive interface with real-time progress tracking, animated feedback, and seamless workflow management. The GUI handles complex async operations while maintaining a clean, professional user experience.
 
 **AI Integration Layer**: I implemented a flexible dual-provider system supporting both OpenAI (GPT-4o, GPT-4 Turbo, GPT-4o Mini) and Google AI (Gemini models), allowing users to choose the best model for their specific needs and budget constraints.
 
-**Content Processing Pipeline**: My cmetom scraping engine handles diverse content formats, from simple blog posts to complex PDFs meing intelligent text extraction algorithms that preserve structure while filtering out noise.
+**Content Processing Pipeline**: My custom scraping engine handles diverse content formats, from simple blog posts to complex PDFs with intelligent text extraction algorithms that preserve structure while filtering out noise.
 
 **Style Analysis Engine**: The core AI system employs advanced natural language processing to identify and quantify stylistic elements including lexical diversity, syntactic complexity, rhetorical patterns, and emotional resonance.
 
 **Voice Synthesis Integration**: ElevenLabs API integration provides high-quality text-to-speech conversion with mentor-specific voice mapping, complete with audio playback controls and background processing.
 
-**Data Architecture**: A robmet file organization system automatically manages mentor profiles, session data, and analysis results in a clean, exportable structure that supports easy backup and sharing.
+**Data Architecture**: A robust file organization system automatically manages mentor profiles, session data, and analysis results in a clean, exportable structure that supports easy backup and sharing.
 
 ## Challenges I ran into
-Building MentorMirror presented numerome technical and conceptual challenges that pmehed me to innovate:
+Building MentorMirror presented numerous technical and conceptual challenges that pushed me to innovate:
 
 **Content Extraction Complexity**: Ib scraping seems straightforward until you encounter the wild variety of content structures online. I had to develop intelligent parsing algorithms that could handle everything from simple blog posts to complex academic PDFs, dynamic JavaScript-loaded content, and multimedia-rich pages. Each site presented unique challenges in extracting clean, meaningful text while preserving important structural elements.
 
@@ -44,24 +47,24 @@ Building MentorMirror presented numerome technical and conceptual challenges tha
 
 **Style Quantification**: Perhaps the most intellectually challenging aspect was developing algorithms to capture the ineffable qualities that make each writer unique. How do you quantify Churchill's rhetorical power or Paul Graham's analytical clarity? I created multi-dimensional analysis frameworks that examine syntax, semantics, rhythm, and emotional undertones to build comprehensive style profiles.
 
-**Real-time User Experience**: Balancing thorough analysis with responsive meer experience required careful engineering. I implemented sophisticated progress tracking, background processing, and cancellation mechanisms to ensure users always feel in control, even during lengthy AI processing operations.
+**Real-time User Experience**: Balancing thorough analysis with responsive user experience required careful engineering. I implemented sophisticated progress tracking, background processing, and cancellation mechanisms to ensure users always feel in control, even during lengthy AI processing operations.
 
-**API Integration Reliability**: Working with multiple AI providers meant handling variome API limitations, rate limits, and failure modes. I built robmet retry mechanisms, fallback systems, and clear error reporting to maintain reliability across different service providers.
+**API Integration Reliability**: Working with multiple AI providers meant handling various API limitations, rate limits, and failure modes. I built robust retry mechanisms, fallback systems, and clear error reporting to maintain reliability across different service providers.
 
 **Voice Synthesis Coordination**: Integrating text-to-speech functionality required managing complex state transitions between text generation, audio synthesis, and playback controls, all while maintaining responsive UI interactions.
 
 ## Accomplishments that I'm proud of
-MentorMirror represents several significant technical and meer experience achievements:
+MentorMirror represents several significant technical and user experience achievements:
 
 **Seamless End-to-End Automation**: I created a complete workflow that takes users from raw URL to fully analyzed writing mentor in minutes, not hours. The system handles content extraction, author detection, style analysis, prompt generation, and database management automatically, with comprehensive validation at each step.
 
-**Intelligent Duplicate Management**: My smart duplicate handling system automatically resolves conflicts when multiple "unknown" authors are detected, creating clean, organized mentor databases without meer intervention.
+**Intelligent Duplicate Management**: My smart duplicate handling system automatically resolves conflicts when multiple "unknown" authors are detected, creating clean, organized mentor databases without user intervention.
 
 **Multi-Provider AI Flexibility**: By supporting both OpenAI and Google AI models, we've given users the freedom to choose the best tool for their specific needs and budget, while maintaining consistent functionality across providers.
 
 **Professional-Grade Voice Integration**: The ElevenLabs integration provides remarkably authentic voice synthesis, with intelligent mentor-to-voice mapping that brings text to life in ways that feel genuinely representative of each author's speaking style.
 
-**Robmet Error Handling**: I've built a system that gracefully handles the countless ways things can go wrong—from network failures to malformed content to API limitations—while providing clear, actionable feedback to users.
+**Robust Error Handling**: I've built a system that gracefully handles the countless ways things can go wrong—from network failures to malformed content to API limitations—while providing clear, actionable feedback to users.
 
 **Scalable Architecture**: The modular design allows for easy expansion, whether adding new AI providers, content sources, or analysis capabilities, ensuring MentorMirror can grow with evolving technologies.
 
@@ -73,7 +76,7 @@ MentorMirror represents several significant technical and meer experience achiev
 
 **The Art of Style Analysis**: Quantifying writing style is both more complex and more subjective than initially anticipated. I discovered that effective style analysis requires multiple analytical dimensions and that different authors require different analytical approaches.
 
-**Asynchronome Processing Design**: Managing long-running AI operations while maintaining responsive UI required sophisticated threading, progress tracking, and cancellation mechanisms. I learned the importance of giving users control and visibility into background processes.
+**Asynchronous Processing Design**: Managing long-running AI operations while maintaining responsive UI required sophisticated threading, progress tracking, and cancellation mechanisms. I learned the importance of giving users control and visibility into background processes.
 
 **Content Processing Challenges**: The diversity of online content formats taught me the importance of  parsing algorithms and the value of graceful degradation when perfect extraction isn't possible.
 
@@ -83,23 +86,22 @@ MentorMirror represents several significant technical and meer experience achiev
 
 My roadmap for MentorMirror includes exciting expansions that will make it even more powerful and accessible:
 
-**Expanded Voice Library**: I're working to add voice synthesis support for many more mentors, including historical figures, contemporary thought leaders, and international authors, creating a truly global library of writing voices.
+**Expanded Voice Library**: I'm working to add voice synthesis support for many more mentors, including historical figures, contemporary thought leaders, and international authors, creating a truly global library of writing voices.
 
 **Enhanced Content Sources**: Future versions will support additional content formats including YouTube transcripts, podcast transcriptions, social media posts, and academic papers, dramatically expanding the pool of potential mentors.
 
-**Collaborative Features**: I're developing sharing capabilities that will allow users to export and share mentor profiles, creating a community-driven library of writing styles and mentorship resources.
+**Collaborative Features**: I'm developing sharing capabilities that will allow users to export and share mentor profiles, creating a community-driven library of writing styles and mentorship resources.
 
 **Advanced Analytics**: Enhanced style analysis will include more sophisticated metrics like emotional progression, argument structure analysis, and comparative style evolution over time.
 
-**Ib Platform**: A browser-based version will make MentorMirror accessible to users who prefer web applications, with cloud-based processing and cross-device synchronization.
-
 **Multi-Language Support**: International expansion will include support for analyzing and emulating writing styles in multiple languages, opening up global literary traditions.
 
-**Integration Ecosystem**: I're planning integrations with popular writing tools like Notion, Google Docs, and Grammarly, allowing users to apply mentor styles directly in their existing workflows.
+**Integration Ecosystem**: I'm planning integrations with popular writing tools like Notion, Google Docs, and Grammarly, allowing users to apply mentor styles directly in their existing workflows.
 
-**Educational Partnerships**: I're exploring partnerships with educational institutions to create structured writing curricula built around MentorMirror's mentorship capabilities.
+**Educational Partnerships**: I'm exploring partnerships with educational institutions to create structured writing curricula built around MentorMirror's mentorship capabilities.
 
 **Mobile Applications**: Native mobile apps will bring MentorMirror's capabilities to smartphones and tablets, making mentorship accessible anywhere inspiration strikes.
+
 
 ## Features
 
