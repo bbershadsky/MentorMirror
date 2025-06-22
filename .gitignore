@@ -47,3 +47,6 @@ uv.lock
 temp
 tmp
 node_modules
+
+.next
+.vercel
